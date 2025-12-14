@@ -35,6 +35,8 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
+**자세한 설정 방법은 [ENV_SETUP.md](./ENV_SETUP.md)를 참조하세요.**
+
 ### 3. Supabase 설정
 
 1. [Supabase](https://supabase.com)에서 새 프로젝트를 생성하세요.
