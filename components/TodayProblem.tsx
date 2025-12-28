@@ -18,6 +18,54 @@ const platformIcons: Record<string, string> = {
   LC: '🌐',
 }
 
+function getDifficultyClassName(platform: string, difficulty: string): string {
+  if (platform === 'BOJ') {
+    switch (difficulty) {
+      case 'Bronze':
+        return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+      case 'Silver':
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+      case 'Gold':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+      case 'Platinum':
+        return 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200'
+      case 'Diamond':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+      case 'Ruby':
+        return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+    }
+  } else if (platform === 'Programmers') {
+    switch (difficulty) {
+      case 'Lv. 1':
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+      case 'Lv. 2':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+      case 'Lv. 3':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+      case 'Lv. 4':
+        return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
+      case 'Lv. 5':
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+    }
+  } else if (platform === 'LC') {
+    switch (difficulty) {
+      case 'Easy':
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+      case 'Medium':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+      case 'Hard':
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+    }
+  }
+  return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+}
+
 export default function TodayProblem({ problem, isCompleted, streak, userId }: TodayProblemProps) {
   const router = useRouter()
   const supabase = createClient()
@@ -94,19 +142,10 @@ export default function TodayProblem({ problem, isCompleted, streak, userId }: T
 
         <div className="mb-6">
           <span
-            className={`inline-block rounded-full px-3 py-1 text-sm font-semibold ${
-              problem.difficulty === 'Bronze'
-                ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
-                : problem.difficulty === 'Silver'
-                  ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-                  : problem.difficulty === 'Gold'
-                    ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-                    : problem.difficulty === 'Platinum'
-                      ? 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200'
-                      : problem.difficulty === 'Diamond'
-                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                        : 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-            }`}
+            className={`inline-block rounded-full px-3 py-1 text-sm font-semibold ${getDifficultyClassName(
+              problem.platform,
+              problem.difficulty
+            )}`}
           >
             {problem.difficulty}
           </span>
