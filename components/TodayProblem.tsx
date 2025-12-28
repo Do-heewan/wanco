@@ -137,12 +137,12 @@ export default function TodayProblem({ problem, isCompleted, streak, userId }: T
 
       {/* 네비게이션 */}
       <div className="mt-6 text-center">
-        <a
+        {/* <a
           href="/history"
           className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
         >
           기록 보기 →
-        </a>
+        </a> */}
       </div>
     </div>
   )

@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import SetupForm from '@/components/SetupForm'
-import type { Difficulty } from '@/types/database'
 
 export default async function SetupPage() {
   const supabase = await createClient()

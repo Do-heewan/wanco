@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import TodayProblem from '@/components/TodayProblem'
-import LogoutButton from '@/components/LogoutButton'
 import { calculateStreak, getTodayDateString } from '@/lib/utils'
 
 export default async function TodayPage() {
@@ -53,9 +52,6 @@ export default async function TodayPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-4 flex justify-end">
-          <LogoutButton />
-        </div>
         <TodayProblem
           problem={todayProblem}
           isCompleted={!!progress}

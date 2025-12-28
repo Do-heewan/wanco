@@ -1,18 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
-import LoginButton from '@/components/LoginButton'
-
 export default async function Home() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  // 이미 로그인된 사용자는 /today로 리다이렉트
-  if (user) {
-    redirect('/today')
-  }
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <main className="flex min-h-screen w-full max-w-4xl flex-col items-center justify-center px-6 py-16 text-center">
@@ -27,10 +13,6 @@ export default async function Home() {
             <p className="font-medium">🔥 매일 새로운 문제로 실력을 키우세요</p>
             <p className="font-medium">📊 스트릭과 통계로 성장을 확인하세요</p>
             <p className="font-medium">🎯 목표 난이도에 맞춘 맞춤형 문제</p>
-          </div>
-
-          <div className="mt-12">
-            <LoginButton />
           </div>
         </div>
       </main>

@@ -73,12 +73,12 @@ export default function HistoryView({
     <div className="mx-auto max-w-6xl">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">기록 & 통계</h1>
-        <Link
+        {/* <Link
           href="/today"
           className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
         >
           ← 오늘의 문제
-        </Link>
+        </Link> */}
       </div>
 
       {/* 통계 카드 */}
