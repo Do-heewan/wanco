@@ -9,6 +9,7 @@ export default function NavLinks() {
   const links = [
     { href: '/today', label: '오늘의 문제' },
     { href: '/history', label: '기록' },
+    { href: '/setup', label: '마이페이지' },
   ]
 
   return (

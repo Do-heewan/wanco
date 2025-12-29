@@ -38,46 +38,58 @@ export default async function TodayPage() {
 
   if (dailyProblem && !dailyProblemError) {
     const dailyProblemData = dailyProblem as DailyProblem
-    let problemData: { title: string; difficulty: string; url: string } | null = null
 
     if (dailyProblemData.platform === 'BOJ') {
-      const result = await supabase
+      const { data: bojProblem, error: bojError } = await supabase
         .from('boj_problems')
         .select('*')
         .eq('id', dailyProblemData.problem_id)
         .maybeSingle()
-      if (!result.error && result.data) {
-        problemData = result.data
+
+      if (!bojError && bojProblem) {
+        todayProblem = {
+          id: dailyProblemData.id,
+          platform: 'BOJ',
+          title: bojProblem.title,
+          difficulty: bojProblem.difficulty,
+          url: bojProblem.url,
+          date: dailyProblemData.date,
+        }
       }
     } else if (dailyProblemData.platform === 'Programmers') {
-      const result = await supabase
+      const { data: programmersProblem, error: programmersError } = await supabase
         .from('programmers_problems')
         .select('*')
         .eq('id', dailyProblemData.problem_id)
         .maybeSingle()
-      if (!result.error && result.data) {
-        problemData = result.data
+
+      if (!programmersError && programmersProblem) {
+        todayProblem = {
+          id: dailyProblemData.id,
+          platform: 'Programmers',
+          title: programmersProblem.title,
+          difficulty: programmersProblem.difficulty,
+          url: programmersProblem.url,
+          date: dailyProblemData.date,
+        }
       }
     } else if (dailyProblemData.platform === 'LC') {
-      const result = await supabase
+      const { data: leetcodeProblem, error: leetcodeError } = await supabase
         .from('leetcode_problems')
         .select('*')
         .eq('id', dailyProblemData.problem_id)
         .maybeSingle()
-      if (!result.error && result.data) {
-        problemData = result.data
-      }
-    }
 
-    if (problemData) {
-      todayProblem = {
-        id: dailyProblemData.id,
-        platform: dailyProblemData.platform,
-        title: problemData.title,
-        difficulty: problemData.difficulty,
-        url: problemData.url,
-        date: dailyProblemData.date,
-      } as Problem
+      if (!leetcodeError && leetcodeProblem) {
+        todayProblem = {
+          id: dailyProblemData.id,
+          platform: 'LC',
+          title: leetcodeProblem.title,
+          difficulty: leetcodeProblem.difficulty,
+          url: leetcodeProblem.url,
+          date: dailyProblemData.date,
+        }
+      }
     }
   }
 
