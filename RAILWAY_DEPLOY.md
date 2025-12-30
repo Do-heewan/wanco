@@ -27,33 +27,30 @@ docker buildx inspect --bootstrap
 
 #### 1단계: Docker 이미지 빌드
 
-**맥북 ARM64 사용자**: Railway는 Linux amd64 플랫폼을 사용하므로 크로스 플랫폼 빌드가 필요합니다.
+**⚠️ 중요: 환경 변수는 빌드 타임에 포함되어야 함**
+
+Next.js는 `NEXT_PUBLIC_*` 변수를 빌드 시에 JavaScript에 번들링합니다. 따라서 **반드시 빌드 타임에 환경 변수를 전달해야 합니다**.
 
 ```bash
 # 프로젝트 루트에서 실행
+# Supabase URL과 키를 실제 값으로 변경하세요
 
-# 방법 1: buildx를 사용한 크로스 플랫폼 빌드 (환경 변수 포함, 권장)
+docker build \
+  --build-arg NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co" \
+  --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key-here" \
+  -t wanco:latest .
+```
+
+**맥북 ARM64 사용자**: Railway는 Linux amd64를 사용하므로 크로스 플랫폼 빌드를 권장합니다:
+
+```bash
 docker buildx build \
   --platform linux/amd64 \
   --build-arg NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co" \
   --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key-here" \
   -t wanco:latest \
-  --load .
-
-# 방법 2: buildx를 사용한 크로스 플랫폼 빌드 (환경 변수 없이)
-# Railway에서 런타임 환경 변수를 설정하는 경우
-docker buildx build --platform linux/amd64 -t wanco:latest --load .
-
-# 방법 3: 일반 빌드 (로컬 테스트용, Railway 배포에는 권장하지 않음)
-docker build -t wanco:latest .
+  -o type=docker .
 ```
-
-**참고**: 
-- `--platform linux/amd64`: Railway가 사용하는 플랫폼으로 빌드
-- `--load`: 빌드된 이미지를 로컬 Docker에 로드 (푸시 전 테스트 가능)
-- `--build-arg`: 빌드 타임에 환경 변수를 전달 (권장)
-- ARM64 맥북에서 빌드 시 이 옵션을 사용하지 않으면 런타임 오류가 발생할 수 있습니다
-- **중요**: 빌드 타임에 환경 변수를 포함하면 Railway에서 별도 설정 없이도 작동합니다
 
 #### 2단계: Docker Hub에 로그인
 
@@ -81,23 +78,19 @@ docker push your-dockerhub-username/wanco:latest
 
 #### 5단계: 환경 변수 설정
 
-**⚠️ 매우 중요**: Docker 이미지를 사용하는 경우, 환경 변수는 **Railway에서 설정한 후 이미지를 재빌드**해야 합니다.
+**⚠️ 중요**: Docker 빌드 시 이미 환경 변수를 포함했다면, Railway에서 추가 설정은 필요 없습니다.
 
-Railway 대시보드에서 프로젝트를 선택한 후:
+만약 빌드 타임에 환경 변수를 포함하지 않았다면, Railway 대시보드에서:
 
 1. **Variables** 탭 클릭
-2. 다음 환경 변수를 **정확히** 추가 (변수 이름과 값 모두 확인):
+2. 다음 환경 변수를 추가:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
-**중요 사항**: 
-- Supabase URL과 키는 프로덕션 환경용으로 설정하세요
-- 변수 이름은 정확히 `NEXT_PUBLIC_SUPABASE_URL`과 `NEXT_PUBLIC_SUPABASE_ANON_KEY`여야 합니다 (대소문자 구분)
-- 값에는 따옴표나 공백을 포함하지 마세요
-- Railway는 자동으로 `PORT` 환경 변수를 설정하므로 별도 설정 불필요
+⚠️ **그러나 이 경우 클라이언트 사이드 에러가 발생할 수 있습니다**. 반드시 빌드 타임에 환경 변수를 포함하는 것을 권장합니다.
 - **환경 변수 설정 후 Railway가 자동으로 재배포하지만, Docker 이미지를 사용하는 경우 수동으로 재배포가 필요할 수 있습니다**
 
 **환경 변수 확인 방법:**

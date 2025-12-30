@@ -76,6 +76,55 @@ wanco/
 
 ## 배포
 
+### Docker를 사용한 배포 (권장)
+
+#### 1단계: .env.local 파일 생성
+
+프로젝트 루트에 `.env.local` 파일을 생성하세요:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+#### 2단계: 스크립트 실행
+
+**Windows (PowerShell)**:
+```powershell
+.\deploy.ps1
+```
+
+**macOS/Linux**:
+```bash
+bash deploy.sh
+```
+
+그러면 스크립트가 자동으로 `.env.local`에서 환경 변수를 읽어 Docker 이미지를 빌드합니다.
+
+**사용 가능한 명령어**:
+```bash
+# 빌드 후 컨테이너 실행 (기본값)
+.\deploy.ps1 -Action build-and-run
+bash deploy.sh build-and-run
+
+# 빌드만 수행
+.\deploy.ps1 -Action build
+bash deploy.sh build
+
+# 컨테이너만 실행
+.\deploy.ps1 -Action run
+bash deploy.sh run
+```
+
+#### Railway 배포
+
+자세한 Railway 배포 가이드는 [RAILWAY_DEPLOY.md](./RAILWAY_DEPLOY.md)를 참조하세요.
+
+**핵심 포인트**:
+- `.env.local`에서 읽은 환경 변수로 Docker 빌드
+- `NEXT_PUBLIC_*` 변수는 빌드 타임에 JavaScript에 번들링됨
+- 빌드 후 런타임에만 환경 변수를 설정하면 작동하지 않음
+
 ### Vercel 배포
 
 1. GitHub에 프로젝트를 푸시하세요.

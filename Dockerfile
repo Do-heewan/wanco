@@ -1,43 +1,42 @@
-# Next.js 프로덕션 빌드를 위한 Dockerfile
+# Base stage for dependencies
+FROM node:20-alpine AS base
 
-# 의존성 설치 단계
-FROM node:20-alpine AS deps
+# Dependencies stage
+FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# package.json과 package-lock.json 복사
+# Copy package files
 COPY package.json package-lock.json* ./
 RUN npm ci
 
-# 빌드 단계
-FROM node:20-alpine AS builder
+# Builder stage
+FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
 
-# Next.js 빌드 (standalone 출력 사용)
-# 빌드 타임 환경 변수 (ARG는 빌드 시 전달 가능)
+# 빌드 타임 환경 변수 (Next.js에서 NEXT_PUBLIC_*는 빌드 시 번들링됨)
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-# ARG를 ENV로 변환하여 빌드 시 사용
-ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
-ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
 
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Build Next.js application with environment variables
 RUN npm run build
 
-# 프로덕션 실행 단계
-FROM node:20-alpine AS runner
+# Runner stage
+FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# standalone 출력 복사
+# Copy necessary files from builder
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
@@ -46,8 +45,7 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]
-
