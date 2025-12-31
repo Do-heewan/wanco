@@ -2,9 +2,16 @@ import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
-  const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/today'
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL!
+
+const { searchParams } = new URL(request.url)
+const code = searchParams.get('code')
+
+const nextParam = searchParams.get('next')
+const next =
+  nextParam && nextParam.startsWith('/')
+    ? nextParam
+    : '/today'
 
   if (code) {
     const supabase = await createClient()
@@ -24,15 +31,15 @@ export async function GET(request: Request) {
 
         // 프로필이 없으면 설정 페이지로
         if (!profile) {
-          return NextResponse.redirect(`${origin}/setup`)
+          return NextResponse.redirect(new URL('/setup', SITE_URL))
         }
 
-        return NextResponse.redirect(`${origin}${next}`)
+        return NextResponse.redirect(new URL(next, SITE_URL))
       }
     }
   }
 
   // 오류 발생 시 홈으로 리다이렉트
-  return NextResponse.redirect(`${origin}/`)
+  return NextResponse.redirect(new URL('/', SITE_URL))
 }
 
