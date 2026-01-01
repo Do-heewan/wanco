@@ -2,13 +2,40 @@
 
 하루 한 문제로 코딩테스트를 습관으로 만드는 서비스입니다.
 
-## 기능
+## 서비스 소개
 
-- 🔐 Google OAuth를 통한 간편한 로그인
-- 📅 매일 새로운 코딩테스트 문제 제공
-- 🔥 스트릭 시스템으로 꾸준한 학습 유도
-- 📊 GitHub 잔디 스타일의 활동 달력
-- 📈 통계 대시보드 (총 문제 수, 최고 스트릭, 달성률 등)
+Wanco는 개발자들이 코딩테스트 준비를 꾸준히 할 수 있도록 돕는 학습 플랫폼입니다. 매일 새로운 문제를 제공하고, 스트릭 시스템을 통해 지속적인 학습 습관을 형성할 수 있도록 지원합니다.
+
+## 주요 기능
+
+### 🔐 간편한 로그인
+- Google OAuth를 통한 원클릭 로그인
+- 별도의 회원가입 과정 없이 바로 시작 가능
+
+### 📅 매일 새로운 문제
+- 매일 새로운 코딩테스트 문제 제공
+- 다양한 난이도의 문제로 실력 향상
+- 목표 난이도에 맞춘 맞춤형 문제 추천
+
+### 🔥 스트릭 시스템
+- 매일 문제를 풀면 스트릭이 쌓입니다
+- 연속 학습 일수를 기록하여 동기부여 제공
+- 스트릭이 끊기지 않도록 꾸준한 학습 유도
+
+### 📊 활동 달력
+- GitHub 잔디 스타일의 활동 달력
+- 날짜별 문제 풀이 현황을 시각적으로 확인
+- 한눈에 보는 학습 이력 관리
+
+### 📈 통계 대시보드
+- 총 문제 풀이 수
+- 최고 스트릭 기록
+- 달성률 및 학습 통계
+- 개인 성장 추이 확인
+
+## 왜 Wanco인가요?
+
+코딩테스트 준비는 꾸준함이 가장 중요합니다. Wanco는 매일 한 문제씩 풀어나가며 자연스럽게 코딩테스트 실력을 향상시킬 수 있도록 설계되었습니다. 스트릭 시스템과 통계 기능을 통해 학습 동기를 유지하고, 목표를 달성하는 성취감을 느낄 수 있습니다.
 
 ## 기술 스택
 
@@ -20,118 +47,8 @@
 
 ## 시작하기
 
-### 1. 의존성 설치
+Wanco를 시작하려면 Google 계정으로 간단히 로그인하세요. 별도의 회원가입이나 복잡한 설정 없이 바로 오늘의 문제를 풀어보실 수 있습니다.
 
-```bash
-npm install
-```
+---
 
-### 2. 환경 변수 설정
-
-`.env.local` 파일을 생성하고 다음 변수를 설정하세요:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-**자세한 설정 방법은 [ENV_SETUP.md](./ENV_SETUP.md)를 참조하세요.**
-
-### 3. Supabase 설정
-
-1. [Supabase](https://supabase.com)에서 새 프로젝트를 생성하세요.
-2. Authentication > Providers에서 Google OAuth를 활성화하세요.
-3. SQL Editor에서 `DATABASE_SCHEMA.md`의 스키마를 실행하세요.
-4. Authentication > URL Configuration에서 Redirect URLs에 `http://localhost:3000/auth/callback`을 추가하세요.
-
-### 4. 개발 서버 실행
-
-```bash
-npm run dev
-```
-
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인하세요.
-
-## 프로젝트 구조
-
-```
-wanco/
-├── app/                    # Next.js App Router 페이지
-│   ├── page.tsx           # 랜딩 페이지 (/)
-│   ├── today/             # 오늘의 문제 페이지 (/today)
-│   ├── history/           # 기록/통계 페이지 (/history)
-│   ├── setup/             # 프로필 설정 페이지 (/setup)
-│   └── auth/              # 인증 관련 라우트
-├── components/            # React 컴포넌트
-├── lib/                   # 유틸리티 및 Supabase 클라이언트
-│   ├── supabase/         # Supabase 클라이언트 설정
-│   └── utils.ts          # 유틸리티 함수
-├── types/                 # TypeScript 타입 정의
-└── middleware.ts          # Next.js 미들웨어 (인증 처리)
-```
-
-## 데이터베이스 스키마
-
-자세한 데이터베이스 스키마는 [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md)를 참조하세요.
-
-## 배포
-
-### Docker를 사용한 배포 (권장)
-
-#### 1단계: .env.local 파일 생성
-
-프로젝트 루트에 `.env.local` 파일을 생성하세요:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-```
-
-#### 2단계: 스크립트 실행
-
-**Windows (PowerShell)**:
-```powershell
-.\deploy.ps1
-```
-
-**macOS/Linux**:
-```bash
-bash deploy.sh
-```
-
-그러면 스크립트가 자동으로 `.env.local`에서 환경 변수를 읽어 Docker 이미지를 빌드합니다.
-
-**사용 가능한 명령어**:
-```bash
-# 빌드 후 컨테이너 실행 (기본값)
-.\deploy.ps1 -Action build-and-run
-bash deploy.sh build-and-run
-
-# 빌드만 수행
-.\deploy.ps1 -Action build
-bash deploy.sh build
-
-# 컨테이너만 실행
-.\deploy.ps1 -Action run
-bash deploy.sh run
-```
-
-#### Railway 배포
-
-자세한 Railway 배포 가이드는 [RAILWAY_DEPLOY.md](./RAILWAY_DEPLOY.md)를 참조하세요.
-
-**핵심 포인트**:
-- `.env.local`에서 읽은 환경 변수로 Docker 빌드
-- `NEXT_PUBLIC_*` 변수는 빌드 타임에 JavaScript에 번들링됨
-- 빌드 후 런타임에만 환경 변수를 설정하면 작동하지 않음
-
-### Vercel 배포
-
-1. GitHub에 프로젝트를 푸시하세요.
-2. [Vercel](https://vercel.com)에서 프로젝트를 import하세요.
-3. 환경 변수를 설정하세요.
-4. 배포가 완료되면 Supabase의 Redirect URLs에 프로덕션 URL을 추가하세요.
-
-## 라이선스
-
-MIT
+**하루 한 문제, 꾸준한 성장을 함께해요! 🚀**
