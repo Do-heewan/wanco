@@ -25,8 +25,11 @@ export default function HistoryView({
   const availableYears = useMemo(() => {
     const years = new Set<number>()
     progressDates.forEach((dateStr) => {
-      const year = new Date(dateStr).getFullYear()
-      years.add(year)
+      // YYYY-MM-DD 형식에서 연도 추출
+      const year = parseInt(dateStr.split('-')[0], 10)
+      if (!isNaN(year)) {
+        years.add(year)
+      }
     })
     // 현재 연도와 기록이 있는 연도들을 합침
     years.add(currentYear)
@@ -54,7 +57,12 @@ export default function HistoryView({
     // 첫 번째 일요일부터 마지막 토요일까지 모든 날짜 생성
     const currentDate = new Date(firstSunday)
     while (currentDate <= lastSaturday) {
-      const dateStr = currentDate.toISOString().split('T')[0]
+      // 로컬 타임존 기준으로 날짜 문자열 생성 (YYYY-MM-DD)
+      const year = currentDate.getFullYear()
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0')
+      const day = String(currentDate.getDate()).padStart(2, '0')
+      const dateStr = `${year}-${month}-${day}`
+      
       days.push({
         date: new Date(currentDate),
         hasProgress: progressDates.has(dateStr) && 
@@ -96,8 +104,9 @@ export default function HistoryView({
   // 선택한 연도의 통계 계산
   const yearStats = useMemo(() => {
     const yearProgress = Array.from(progressDates).filter((dateStr) => {
-      const year = new Date(dateStr).getFullYear()
-      return year === selectedYear
+      // YYYY-MM-DD 형식에서 연도 추출
+      const year = parseInt(dateStr.split('-')[0], 10)
+      return !isNaN(year) && year === selectedYear
     })
     
     return {
