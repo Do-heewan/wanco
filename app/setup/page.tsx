@@ -20,9 +20,9 @@ export default async function SetupPage() {
     .single()
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-      <main className="w-full max-w-md rounded-lg bg-white p-8 shadow-xl dark:bg-gray-800">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+      <main className="w-full max-w-md rounded-lg bg-white p-8 shadow-xl">
+        <h1 className="mb-6 text-2xl font-bold text-gray-900">
           마이페이지
         </h1>
         <SetupForm userId={user.id} initialProfile={profile || null} />
