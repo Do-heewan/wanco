@@ -81,7 +81,15 @@ export default function TodayProblem({ problem, isCompleted, streak, userId }: T
 
     setIsSubmitting(true)
     try {
-      const today = new Date().toISOString().split('T')[0]
+      // 기존의 방식 (UTC 기준)
+      // const today = new Date().toISOString().split('T')[0]
+
+      // 수정 (로컬 타임존 기준)
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      const day = String(now.getDate()).padStart(2, '0')
+      const today = `${year}-${month}-${day}`
 
       const { error } = await supabase.from('user_progress').insert({
         user_id: userId,

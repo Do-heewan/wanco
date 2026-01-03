@@ -76,61 +76,61 @@ wanco/
 
 ## 배포
 
-### Docker를 사용한 배포 (권장)
+### Vercel 배포 (권장) ⚡
 
-#### 1단계: .env.local 파일 생성
+Vercel은 Next.js를 네이티브로 지원하므로 가장 간단하고 최적화된 배포 방법입니다.
 
-프로젝트 루트에 `.env.local` 파일을 생성하세요:
+#### 1단계: GitHub에 프로젝트 푸시
+
+```bash
+git add .
+git commit -m "Vercel 배포 준비"
+git push origin main
+```
+
+#### 2단계: Vercel에서 프로젝트 Import
+
+1. [Vercel](https://vercel.com)에 로그인하세요.
+2. **Add New...** → **Project**를 클릭하세요.
+3. GitHub 저장소를 선택하고 **Import**를 클릭하세요.
+4. Vercel이 자동으로 Next.js 프로젝트를 감지합니다.
+
+#### 3단계: 환경 변수 설정
+
+Vercel 대시보드의 **Settings** → **Environment Variables**에서 다음 변수를 추가하세요:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-#### 2단계: 스크립트 실행
+**중요**: 
+- `NEXT_PUBLIC_*` 변수는 빌드 타임에 번들링되므로, 환경 변수를 설정한 후 **재배포**해야 합니다.
+- Production, Preview, Development 환경별로 각각 설정할 수 있습니다.
 
-**Windows (PowerShell)**:
-```powershell
-.\deploy.ps1
-```
+#### 4단계: 배포 및 Supabase 설정
 
-**macOS/Linux**:
-```bash
-bash deploy.sh
-```
+1. **Deploy** 버튼을 클릭하여 배포를 시작하세요.
+2. 배포가 완료되면 Vercel이 제공하는 URL을 확인하세요 (예: `https://your-project.vercel.app`).
+3. Supabase 대시보드에서 **Authentication** → **URL Configuration** → **Redirect URLs**에 다음을 추가하세요:
+   ```
+   https://your-project.vercel.app/auth/callback
+   ```
 
-그러면 스크립트가 자동으로 `.env.local`에서 환경 변수를 읽어 Docker 이미지를 빌드합니다.
+#### 5단계: 커스텀 도메인 설정 (선택사항)
 
-**사용 가능한 명령어**:
-```bash
-# 빌드 후 컨테이너 실행 (기본값)
-.\deploy.ps1 -Action build-and-run
-bash deploy.sh build-and-run
+1. Vercel 대시보드에서 **Settings** → **Domains**로 이동하세요.
+2. 원하는 도메인을 입력하고 DNS 설정을 따라하세요.
 
-# 빌드만 수행
-.\deploy.ps1 -Action build
-bash deploy.sh build
+**Vercel의 장점**:
+- ✅ Next.js SSR, ISR, Edge Functions 자동 최적화
+- ✅ 자동 HTTPS 및 CDN
+- ✅ 무료 플랜 제공 (개인 프로젝트에 충분)
+- ✅ GitHub 연동으로 자동 배포
+- ✅ 프리뷰 배포 (Pull Request마다)
+- ✅ 실시간 로그 및 모니터링
 
-# 컨테이너만 실행
-.\deploy.ps1 -Action run
-bash deploy.sh run
-```
-
-#### Railway 배포
-
-자세한 Railway 배포 가이드는 [RAILWAY_DEPLOY.md](./RAILWAY_DEPLOY.md)를 참조하세요.
-
-**핵심 포인트**:
-- `.env.local`에서 읽은 환경 변수로 Docker 빌드
-- `NEXT_PUBLIC_*` 변수는 빌드 타임에 JavaScript에 번들링됨
-- 빌드 후 런타임에만 환경 변수를 설정하면 작동하지 않음
-
-### Vercel 배포
-
-1. GitHub에 프로젝트를 푸시하세요.
-2. [Vercel](https://vercel.com)에서 프로젝트를 import하세요.
-3. 환경 변수를 설정하세요.
-4. 배포가 완료되면 Supabase의 Redirect URLs에 프로덕션 URL을 추가하세요.
+자세한 배포 가이드는 [VERCEL_DEPLOY.md](./VERCEL_DEPLOY.md)를 참조하세요.
 
 ## 라이선스
 
