@@ -58,7 +58,7 @@ export default function SetupForm({ userId, initialProfile }: SetupFormProps) {
       <div>
         <label
           htmlFor="nickname"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="block text-sm font-medium text-gray-700"
         >
           닉네임
         </label>
@@ -68,7 +68,7 @@ export default function SetupForm({ userId, initialProfile }: SetupFormProps) {
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="mt-1 block w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
           placeholder="닉네임을 입력하세요"
         />
       </div>
@@ -76,7 +76,7 @@ export default function SetupForm({ userId, initialProfile }: SetupFormProps) {
       <div>
         <label
           htmlFor="difficulty"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="block text-sm font-medium text-gray-700"
         >
           목표 난이도
         </label>
@@ -85,7 +85,7 @@ export default function SetupForm({ userId, initialProfile }: SetupFormProps) {
           value={targetDifficulty}
           onChange={(e) => setTargetDifficulty(e.target.value as Difficulty)}
           required
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="mt-1 block w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
         >
           {difficulties.map((diff) => (
             <option key={diff} value={diff}>

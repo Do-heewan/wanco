@@ -22,48 +22,48 @@ function getDifficultyClassName(platform: string, difficulty: string): string {
   if (platform === 'BOJ') {
     switch (difficulty) {
       case 'Bronze':
-        return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+        return 'bg-amber-100 text-amber-800'
       case 'Silver':
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+        return 'bg-gray-100 text-gray-800'
       case 'Gold':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+        return 'bg-yellow-100 text-yellow-800'
       case 'Platinum':
-        return 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200'
+        return 'bg-cyan-100 text-cyan-800'
       case 'Diamond':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+        return 'bg-blue-100 text-blue-800'
       case 'Ruby':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
+        return 'bg-purple-100 text-purple-800'
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+        return 'bg-gray-100 text-gray-800'
     }
   } else if (platform === 'Programmers') {
     switch (difficulty) {
       case 'Lv. 1':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+        return 'bg-green-100 text-green-800'
       case 'Lv. 2':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+        return 'bg-blue-100 text-blue-800'
       case 'Lv. 3':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+        return 'bg-yellow-100 text-yellow-800'
       case 'Lv. 4':
-        return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
+        return 'bg-orange-100 text-orange-800'
       case 'Lv. 5':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+        return 'bg-red-100 text-red-800'
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+        return 'bg-gray-100 text-gray-800'
     }
   } else if (platform === 'LC') {
     switch (difficulty) {
       case 'Easy':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+        return 'bg-green-100 text-green-800'
       case 'Medium':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+        return 'bg-yellow-100 text-yellow-800'
       case 'Hard':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+        return 'bg-red-100 text-red-800'
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+        return 'bg-gray-100 text-gray-800'
     }
   }
-  return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+  return 'bg-gray-100 text-gray-800'
 }
 
 export default function TodayProblem({ problem, isCompleted, streak, userId }: TodayProblemProps) {
@@ -81,7 +81,15 @@ export default function TodayProblem({ problem, isCompleted, streak, userId }: T
 
     setIsSubmitting(true)
     try {
-      const today = new Date().toISOString().split('T')[0]
+      // 기존의 방식 (UTC 기준)
+      // const today = new Date().toISOString().split('T')[0]
+
+      // 수정 (로컬 타임존 기준)
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      const day = String(now.getDate()).padStart(2, '0')
+      const today = `${year}-${month}-${day}`
 
       const { error } = await supabase.from('user_progress').insert({
         user_id: userId,
@@ -105,7 +113,7 @@ export default function TodayProblem({ problem, isCompleted, streak, userId }: T
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
-          <p className="text-xl text-gray-600 dark:text-gray-400">
+          <p className="text-xl text-gray-600">
             오늘의 문제가 아직 준비되지 않았습니다.
           </p>
         </div>
@@ -118,23 +126,23 @@ export default function TodayProblem({ problem, isCompleted, streak, userId }: T
       {/* 상단: 날짜 및 스트릭 */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{today}</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{today}</h1>
         </div>
-        <div className="flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2 dark:bg-orange-900">
+        <div className="flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2">
           <span className="text-xl">🔥</span>
-          <span className="font-semibold text-orange-800 dark:text-orange-200">
+          <span className="font-semibold text-orange-800">
             {streak} days
           </span>
         </div>
       </div>
 
       {/* 중앙: 문제 정보 */}
-      <div className="rounded-lg bg-white p-8 shadow-xl dark:bg-gray-800">
+      <div className="rounded-lg bg-white p-8 shadow-xl">
         <div className="mb-6 flex items-center gap-3">
           <span className="text-4xl">{platformIcons[problem.platform] || '📝'}</span>
           <div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">{problem.platform}</div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <div className="text-sm text-gray-500">{problem.platform}</div>
+            <h2 className="text-2xl font-bold text-gray-900">
               {problem.title}
             </h2>
           </div>
@@ -166,7 +174,7 @@ export default function TodayProblem({ problem, isCompleted, streak, userId }: T
           disabled={isCompleted || isSubmitting}
           className={`w-full rounded-lg px-6 py-3 font-semibold transition-colors ${
             isCompleted
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400'
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
               : 'bg-green-600 text-white hover:bg-green-700 disabled:opacity-50'
           }`}
         >
@@ -178,7 +186,7 @@ export default function TodayProblem({ problem, isCompleted, streak, userId }: T
       <div className="mt-6 text-center">
         {/* <a
           href="/history"
-          className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+          className="text-indigo-600 hover:text-indigo-700"
         >
           기록 보기 →
         </a> */}

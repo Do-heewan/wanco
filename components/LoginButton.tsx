@@ -23,7 +23,7 @@ export default function LoginButton() {
   return (
     <button
       onClick={handleLogin}
-      className="flex items-center gap-3 rounded-lg bg-white px-6 py-3 text-gray-900 shadow-lg transition-all hover:shadow-xl dark:bg-gray-800 dark:text-white"
+      className="flex items-center gap-3 rounded-lg bg-white px-6 py-3 text-gray-900 shadow-lg transition-all hover:shadow-xl"
     >
       <svg
         className="h-5 w-5"

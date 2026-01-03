@@ -39,7 +39,7 @@ export default async function TodayPage() {
   if (dailyProblem && !dailyProblemError) {
     const dailyProblemData = dailyProblem as DailyProblem
 
-    if (dailyProblemData.platform === 'BOJ') {
+    if (dailyProblemData.problem_source === 'BOJ') {
       const { data: bojProblem, error: bojError } = await supabase
         .from('boj_problems')
         .select('*')
@@ -56,7 +56,7 @@ export default async function TodayPage() {
           date: dailyProblemData.date,
         }
       }
-    } else if (dailyProblemData.platform === 'Programmers') {
+    } else if (dailyProblemData.problem_source === 'Programmers') {
       const { data: programmersProblem, error: programmersError } = await supabase
         .from('programmers_problems')
         .select('*')
@@ -73,7 +73,7 @@ export default async function TodayPage() {
           date: dailyProblemData.date,
         }
       }
-    } else if (dailyProblemData.platform === 'LC') {
+    } else if (dailyProblemData.problem_source === 'LC') {
       const { data: leetcodeProblem, error: leetcodeError } = await supabase
         .from('leetcode_problems')
         .select('*')
@@ -116,7 +116,7 @@ export default async function TodayPage() {
   const streak = calculateStreak(allProgress || [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
         <TodayProblem
           problem={todayProblem}

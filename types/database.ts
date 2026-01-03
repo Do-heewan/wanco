@@ -33,7 +33,7 @@ export interface LeetCodeProblem {
 
 export interface DailyProblem {
   id: string
-  platform: Platform
+  problem_source: Platform
   problem_id: string
   date: string
   created_at: string
